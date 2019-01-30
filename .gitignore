@@ -1,6 +1,13 @@
-# Folders
+# Project folders
 .idea/
+
+# Cache folders
 __pychache__/
 
-# Files
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Env files
 *.lock
