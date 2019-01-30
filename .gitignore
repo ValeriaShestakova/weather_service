@@ -2,7 +2,7 @@
 .idea/
 
 # Cache folders
-__pychache__/
+*/__pycache__/
 
 # Distribution / packaging
 build/
