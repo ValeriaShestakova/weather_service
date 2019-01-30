@@ -1,0 +1,6 @@
+# Folders
+.idea/
+__pychache__/
+
+# Files
+*.lock
