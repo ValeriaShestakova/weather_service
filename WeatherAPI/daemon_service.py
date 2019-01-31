@@ -1,6 +1,6 @@
-import requests
 
 from WeatherAPI.config_loader import Config
+from WeatherAPI.weather_data import WeatherData
 
 
 class DaemonService:
@@ -8,28 +8,18 @@ class DaemonService:
     def __init__(self):
         self._config = Config()
         self._city = self._config.city
-        self._city_id = self._get_city_id()
 
-    def _get_city_id(self):
+    def proceed_weather(self, num_days=1):
         """
-        Method for get location id
-        :return: location id
+        Method for data record to DB
+        :param num_days: number of days
+        :return:
         """
-        response = requests.get(f'https://www.metaweather.com/api/location/search/?query={self._city}')
-        data = response.json()
-        return data[0]['woeid']
-
-    def get_data_for_date(self, date):
-        """
-        Method for get weather data from api for special date
-        :param date: Date in the format yyyy/mm/dd
-        :return: data for one day
-        """
-        response = requests.get(f'https://www.metaweather.com/api/location/{self._city_id}/{date}')
-        data = response.json()
-        return data
+        weather_data = WeatherData(self._city)
+        all_weather_data = weather_data.get_data_for_days(num_days)
+        return all_weather_data
 
 
 if __name__ == '__main__':
     DaemonService = DaemonService()
-    # print(DaemonService.get_data_for_date('2017/04/02'))
+    print(DaemonService.proceed_weather())
