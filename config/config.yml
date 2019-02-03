@@ -1,2 +1,11 @@
+#Project settings
 project_name: weather
 city: St Petersburg
+
+#DB settings
+db_name: weather_db
+user: user
+password: user
+host: localhost
+port: 5432
+db_table: weather_data
