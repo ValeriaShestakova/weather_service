@@ -20,6 +20,7 @@ class DaemonService:
         all_weather_data = weather_data.get_data_for_days(num_days)
         db = WeatherDAO()
         db.save_data(all_weather_data)
+        print(db.get_data())
 
 
 if __name__ == '__main__':
