@@ -3,6 +3,7 @@ project_name: WeatherService
 city: St Petersburg
 
 #DB settings
+db: Postgresql
 db_name: weather_db
 user: user
 password: user
