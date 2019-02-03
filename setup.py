@@ -14,7 +14,7 @@ def read(file_name):
 
 
 setup(
-    name='Weather_service',
+    name='WeatherService',
     version='0.1',
     description='Service to get weather data for SPb',
     long_description=read('README.md'),
@@ -34,7 +34,7 @@ setup(
         },
     entry_points={
         'console_scripts': [
-            'weather=WeatherAPI.__main__:main',
+            'weather_service=WeatherService.__main__:main',
         ],
     },
     test_suite='tests'

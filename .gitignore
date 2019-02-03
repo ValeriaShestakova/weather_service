@@ -11,3 +11,7 @@ dist/
 
 # Env files
 *.lock
+
+# Log files
+logs/
+*.log

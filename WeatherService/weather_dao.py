@@ -1,7 +1,7 @@
 import psycopg2
 import datetime
 
-from WeatherAPI.config_loader import Config
+from WeatherService.config_loader import Config
 
 
 class WeatherDAO:

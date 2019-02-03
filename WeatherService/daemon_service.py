@@ -1,7 +1,7 @@
 
-from WeatherAPI.config_loader import Config
-from WeatherAPI.weather_data import WeatherData
-from WeatherAPI.weather_dao import WeatherDAO
+from WeatherService.config_loader import Config
+from WeatherService.weather_data import WeatherData
+from WeatherService.weather_dao import WeatherDAO
 
 
 class DaemonService:
@@ -24,4 +24,4 @@ class DaemonService:
 
 if __name__ == '__main__':
     DaemonService = DaemonService()
-    DaemonService.proceed_weather()
+    # DaemonService.proceed_weather()
