@@ -1,0 +1,8 @@
+pyyaml
+pytest
+pylint
+requests
+grequests
+flask
+psycopg2
+flask-restful

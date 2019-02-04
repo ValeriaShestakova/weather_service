@@ -1,3 +1,6 @@
+"""
+Module to load config files
+"""
 import yaml
 
 
