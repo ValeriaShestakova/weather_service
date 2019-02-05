@@ -10,6 +10,8 @@ requests = "*"
 pyyaml = "*"
 psycopg2 = "*"
 pytest = "*"
+flask = "*"
+grequests = "*"
 
 [requires]
 python_version = "3.6"

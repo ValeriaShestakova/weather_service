@@ -1,10 +1,13 @@
+"""
+Module to load config files
+"""
 import yaml
 
 
 class Config:
 
     def __init__(self):
-        self._path = '../config/config.yml'
+        self._path = 'config/config.yml'
         self._config = self._config_load()
 
     def _config_load(self):

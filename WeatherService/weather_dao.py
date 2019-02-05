@@ -1,3 +1,6 @@
+"""
+Module for interaction with database
+"""
 import psycopg2
 import datetime
 import logging
@@ -8,9 +11,6 @@ logger = logging.getLogger('WeatherService.weather_dao')
 
 
 class WeatherDAO:
-    """
-    Class for interaction with DB
-    """
 
     def __init__(self):
         self._config = Config()
@@ -18,6 +18,7 @@ class WeatherDAO:
             f'host={self._config.host} port={self._config.port}'
         # self._delete_table()
         self._create_table()
+        self._create_index()
         logger.info('Init db')
 
     def _create_table(self):
@@ -42,6 +43,9 @@ class WeatherDAO:
         :return:
         """
         logger.info('Get data from db')
+        keys = ('applicable_date', 'created_time', 'weather_state_name', 'wind_direction_compass', 'min_temp',
+                'max_temp', 'the_temp', 'wind_speed', 'wind_direction', 'air_pressure', 'humidity', 'visibility',
+                'predictability')
         end_date = datetime.datetime.today()
         date_list = [end_date - datetime.timedelta(days=x) for x in range(0, num_days)]
         all_data = []
@@ -50,7 +54,10 @@ class WeatherDAO:
                 with conn.cursor() as cursor:
                     cursor.execute('SELECT * FROM weather_data WHERE applicable_date=%s', (date.date(),))
                     for row in cursor:
-                        all_data.extend(row)
+                        dictionary = dict(zip(keys, row))
+                        app_date = dictionary['applicable_date']
+                        dictionary['applicable_date'] = app_date.strftime("%Y-%m-%d")
+                        all_data.append(dictionary)
         return all_data
 
     def save_data(self, weather_data):
@@ -87,6 +94,12 @@ class WeatherDAO:
         with psycopg2.connect(self._connect_data) as conn:
             with conn.cursor() as cursor:
                 cursor.execute('DROP TABLE weather_data CASCADE')
+
+    def _create_index(self):
+        logger.info('Create index')
+        with psycopg2.connect(self._connect_data) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute('CREATE INDEX if not exists idx_weather_date ON weather_data (applicable_date);')
 
 
 if __name__ == '__main__':

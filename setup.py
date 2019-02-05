@@ -1,5 +1,4 @@
 """A setuptools based setup module.
-
 """
 import os
 
@@ -28,15 +27,10 @@ setup(
         'Programming Language :: Python :: 3.7',
         ],
     packages=find_packages(exclude=['tests']),
-    install_requires=[],
+    install_requires=['flask', 'psycopg2', 'flask-restful', 'pyyaml', 'requests', 'grequests'],
     extras_require={
         'dev': ['pytest', 'pylint'],
         },
-    entry_points={
-        'console_scripts': [
-            'weather_service=WeatherService.__main__:main',
-        ],
-    },
     test_suite='tests'
 
 )
