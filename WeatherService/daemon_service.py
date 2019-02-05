@@ -1,13 +1,21 @@
 """
 Module to load and save data to db
 """
+import threading
+import logging
+
 from WeatherService.weather_dao import WeatherDAO
+from WeatherService.metaweather_api import MetaWeatherAPI
+
+logger = logging.getLogger('WeatherService.daemon_service')
 
 
 class DaemonService:
 
-    def __init__(self, weather_service):
-        self._weather_service = weather_service
+    def __init__(self):
+        self._api_meta_weather = MetaWeatherAPI()
+        self._db = WeatherDAO()
+        logger.info('Init daemon')
 
     def proceed_weather(self, num_days=1):
         """
@@ -15,8 +23,14 @@ class DaemonService:
         :param num_days: number of days
         :return:
         """
-        all_weather_data = self._weather_service.get_data_for_days(num_days)
-        db = WeatherDAO()
-        db.save_data(all_weather_data)
+        if num_days == 1:
+            all_weather_data = self._api_meta_weather.get_data_for_day()
+        else:
+            all_weather_data = self._api_meta_weather.get_data_for_days(num_days)
+        self._db.save_data(all_weather_data)
 
+    def load_new_data(self):
+        threading.Timer(43200, self.load_new_data).start()
+        daemon_service = DaemonService()
+        daemon_service.proceed_weather()
 

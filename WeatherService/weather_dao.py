@@ -5,9 +5,30 @@ import psycopg2
 import datetime
 import logging
 
-from WeatherService.config_loader import Config
+from WeatherService.load_config import Config
 
 logger = logging.getLogger('WeatherService.weather_dao')
+
+QUERY_CREATE_TABLE = """CREATE TABLE if not exists weather_data (applicable_date DATE NOT NULL, 
+                     created_time VARCHAR NOT NULL, PRIMARY KEY (applicable_date, created_time), 
+                     weather_state_name VARCHAR NOT NULL, wind_direction_compass VARCHAR, min_temp FLOAT, 
+                     max_temp FLOAT, the_temp FLOAT NOT NULL, wind_speed FLOAT, wind_direction FLOAT,
+                     air_pressure FLOAT, humidity FLOAT, visibility FLOAT, predictability INTEGER); """
+
+QUERY_SELECT = 'SELECT * FROM weather_data WHERE applicable_date=%s'
+
+QUERY_INSERT = """INSERT INTO weather_data (applicable_date, created_time, weather_state_name, 
+                  wind_direction_compass, min_temp, max_temp, the_temp, wind_speed, wind_direction, 
+                  air_pressure, humidity, visibility, predictability)
+                  VALUES (%(applicable_date)s, %(created_time)s, %(weather_state_name)s, 
+                  %(wind_direction_compass)s, %(min_temp)s, %(max_temp)s, %(the_temp)s,
+                  %(wind_speed)s, %(wind_direction)s, %(air_pressure)s, %(humidity)s,
+                  %(visibility)s, %(predictability)s);
+                  """
+
+QUERY_DROP = 'DROP TABLE weather_data CASCADE'
+
+QUERY_CREATE_INDEX = 'CREATE INDEX if not exists idx_weather_date ON weather_data (applicable_date);'
 
 
 class WeatherDAO:
@@ -16,7 +37,6 @@ class WeatherDAO:
         self._config = Config()
         self._connect_data = f'dbname={self._config.db_name}  user={self._config.user} password={self._config.password} ' \
             f'host={self._config.host} port={self._config.port}'
-        # self._delete_table()
         self._create_table()
         self._create_index()
         logger.info('Init db')
@@ -29,12 +49,7 @@ class WeatherDAO:
         logger.info('Create table')
         with psycopg2.connect(self._connect_data) as conn:
             with conn.cursor() as cursor:
-                cursor.execute('CREATE TABLE if not exists weather_data'
-                               '(applicable_date DATE NOT NULL, created_time VARCHAR NOT NULL, '
-                               'PRIMARY KEY (applicable_date, created_time), '
-                               'weather_state_name VARCHAR NOT NULL, wind_direction_compass VARCHAR, min_temp FLOAT, '
-                               'max_temp FLOAT, the_temp FLOAT NOT NULL, wind_speed FLOAT, wind_direction FLOAT,'
-                               'air_pressure FLOAT, humidity FLOAT, visibility FLOAT, predictability INTEGER);')
+                cursor.execute(QUERY_CREATE_TABLE)
 
     def get_data(self, num_days=30):
         """
@@ -52,7 +67,7 @@ class WeatherDAO:
         with psycopg2.connect(self._connect_data) as conn:
             for date in date_list:
                 with conn.cursor() as cursor:
-                    cursor.execute('SELECT * FROM weather_data WHERE applicable_date=%s', (date.date(),))
+                    cursor.execute(QUERY_SELECT, (date.date(),))
                     for row in cursor:
                         dictionary = dict(zip(keys, row))
                         app_date = dictionary['applicable_date']
@@ -73,15 +88,7 @@ class WeatherDAO:
                     data['created_time'] = datetime.datetime.strptime(data['created'], "%Y-%m-%dT%H:%M:%S.%fZ").time().\
                         strftime('%H:%M:%S')
                     try:
-                        cursor.execute("""
-                                        INSERT INTO weather_data (applicable_date, created_time, weather_state_name, 
-                                        wind_direction_compass, min_temp, max_temp, the_temp, wind_speed, wind_direction, 
-                                        air_pressure, humidity, visibility, predictability)
-                                        VALUES (%(applicable_date)s, %(created_time)s, %(weather_state_name)s, 
-                                        %(wind_direction_compass)s, %(min_temp)s, %(max_temp)s, %(the_temp)s,
-                                         %(wind_speed)s, %(wind_direction)s, %(air_pressure)s, %(humidity)s,
-                                          %(visibility)s, %(predictability)s);
-                                        """, data)
+                        cursor.execute(QUERY_INSERT, data)
                     except psycopg2.IntegrityError:
                         cursor.execute('ROLLBACK;')
 
@@ -93,13 +100,13 @@ class WeatherDAO:
         logger.info('Delete table')
         with psycopg2.connect(self._connect_data) as conn:
             with conn.cursor() as cursor:
-                cursor.execute('DROP TABLE weather_data CASCADE')
+                cursor.execute(QUERY_DROP)
 
     def _create_index(self):
         logger.info('Create index')
         with psycopg2.connect(self._connect_data) as conn:
             with conn.cursor() as cursor:
-                cursor.execute('CREATE INDEX if not exists idx_weather_date ON weather_data (applicable_date);')
+                cursor.execute(QUERY_CREATE_INDEX)
 
 
 if __name__ == '__main__':
