@@ -1,6 +1,6 @@
 #Project settings
 project_name: WeatherService
-city: St Petersburg
+city: wsedh
 
 #DB settings
 db: Postgresql
@@ -10,6 +10,7 @@ password: user
 host: localhost
 port: 5432
 db_table: weather_data
+db_schema: public
 
 # External api settings
 api_name: MetaWeather

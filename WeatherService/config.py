@@ -1,5 +1,5 @@
 """
-Module to load config files
+Module to load config parameters
 """
 import yaml
 import logging

@@ -1,5 +1,5 @@
 """
-Module to load and save data to db
+Module to load new data and save data to db
 """
 import threading
 import logging
@@ -31,6 +31,5 @@ class DaemonService:
 
     def load_new_data(self):
         threading.Timer(43200, self.load_new_data).start()
-        daemon_service = DaemonService()
-        daemon_service.proceed_weather()
+        self.proceed_weather()
 
