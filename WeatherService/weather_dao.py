@@ -54,9 +54,13 @@ class WeatherDAO:
         :return:
         """
         logger.info('Create table')
-        with psycopg2.connect(self._connect_data) as conn:
-            with conn.cursor() as cursor:
-                cursor.execute(QUERY_CREATE_TABLE)
+        try:
+            with psycopg2.connect(self._connect_data) as conn:
+                with conn.cursor() as cursor:
+                    cursor.execute(QUERY_CREATE_TABLE)
+        except psycopg2.OperationalError as er:
+            print('Invalid connection data in config')
+            raise er
 
     def get_data(self, begin_date, end_date):
         """

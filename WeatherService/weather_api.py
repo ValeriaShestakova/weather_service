@@ -8,32 +8,6 @@ from WeatherService.weather_service import WeatherService
 from WeatherService.metaweather_api import MetaWeatherAPI
 
 
-from flask import jsonify
-
-
-class InvalidUsage(Exception):
-    status_code = 400
-
-    def __init__(self, message, status_code=None, payload=None):
-        Exception.__init__(self)
-        self.message = message
-        if status_code is not None:
-            self.status_code = status_code
-        self.payload = payload
-
-    def to_dict(self):
-        rv = dict(self.payload or ())
-        rv['message'] = self.message
-        return rv
-
-
-@app.errorhandler(InvalidUsage)
-def handle_invalid_usage(error):
-    response = jsonify(error.to_dict())
-    response.status_code = error.status_code
-    return response
-
-
 class DayWeather(Resource):
     def get(self):
         weather_service = WeatherService()
@@ -43,8 +17,6 @@ class DayWeather(Resource):
 
 class DaysWeather(Resource):
     def get(self, num_days):
-        if type(num_days) is not int:
-            raise InvalidUsage('Parameter num_days must be positive integer!', status_code=410)
         weather_service = WeatherService()
         data = weather_service.get_days_data_from_db(num_days)
         return data

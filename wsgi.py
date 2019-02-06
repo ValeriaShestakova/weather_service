@@ -7,7 +7,7 @@ from WeatherService.weather_api import DayWeather, DaysWeather, HomePage, CityId
 
 api = Api(app)
 api.add_resource(DayWeather, '/weather_service/get_data_for_day')
-api.add_resource(DaysWeather, '/weather_service/get_data_for_days/<num_days>')
+api.add_resource(DaysWeather, '/weather_service/get_data_for_days/<int:num_days>')
 api.add_resource(CityId, '/weather_service/get_city_id')
 api.add_resource(HomePage, '/')
 

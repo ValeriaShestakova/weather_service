@@ -1,6 +1,6 @@
 #Project settings
 project_name: WeatherService
-city: wsedh
+city: St Petersburg
 
 #DB settings
 db: Postgresql
