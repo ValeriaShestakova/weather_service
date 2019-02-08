@@ -33,3 +33,6 @@ class DaemonService:
         threading.Timer(43200, self.load_new_data).start()
         self.proceed_weather()
 
+
+daemon_service = DaemonService()
+

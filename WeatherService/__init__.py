@@ -2,12 +2,11 @@ from gevent import monkey
 monkey.patch_all()
 
 from flask import Flask
-from WeatherService.daemon_service import DaemonService
+from WeatherService.daemon_service import daemon_service
 import threading
 
 
 def create_app():
-    daemon_service = DaemonService()
     t = threading.Thread(target=daemon_service.load_new_data, daemon=True)
     t.start()
     t.join()

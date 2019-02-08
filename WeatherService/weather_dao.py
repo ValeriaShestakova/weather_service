@@ -5,10 +5,9 @@ import psycopg2
 import datetime
 import logging
 
-from WeatherService.config import Config
+from WeatherService.config import config
 
 logger = logging.getLogger('WeatherService.weather_dao')
-config = Config()
 
 QUERY_CREATE_TABLE = f"""CREATE TABLE if not exists {config.db_name}.{config.db_schema}.{config.db_table} 
                      (applicable_date DATE NOT NULL, 
@@ -121,6 +120,8 @@ class WeatherDAO:
             with conn.cursor() as cursor:
                 cursor.execute(QUERY_CREATE_INDEX)
 
+
+weather_dao = WeatherDAO()
 
 if __name__ == '__main__':
     WeatherDAO = WeatherDAO()

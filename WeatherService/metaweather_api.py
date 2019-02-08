@@ -6,7 +6,7 @@ import requests
 import datetime
 import logging
 
-from WeatherService.config import Config
+from WeatherService.config import config
 
 logger = logging.getLogger('WeatherService.metaweather_api')
 
@@ -14,7 +14,7 @@ logger = logging.getLogger('WeatherService.metaweather_api')
 class MetaWeatherAPI:
 
     def __init__(self):
-        self._config = Config()
+        self._config = config
         self._address = self._config.api_address
         self._city = self._config.city
         self._city_id = self.get_city_id()
@@ -58,6 +58,9 @@ class MetaWeatherAPI:
         response = requests.get(self._address+str(self._city_id)+'/'+date)
         data = response.json()
         return data
+
+
+meta_weather_api = MetaWeatherAPI()
 
 
 if __name__ == '__main__':

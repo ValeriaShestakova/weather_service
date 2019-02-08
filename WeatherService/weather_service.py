@@ -5,8 +5,8 @@ This is a module to get and check data from db
 import datetime
 import logging
 
-from WeatherService.weather_dao import WeatherDAO
-from WeatherService.daemon_service import DaemonService
+from WeatherService.weather_dao import weather_dao
+from WeatherService.daemon_service import daemon_service
 
 logger = logging.getLogger('WeatherService.weather_service')
 
@@ -14,7 +14,7 @@ logger = logging.getLogger('WeatherService.weather_service')
 class WeatherService:
 
     def __init__(self):
-        self._weather_db = WeatherDAO()
+        self._weather_db = weather_dao
 
     def _create_date_range(self, num_days):
         """
@@ -34,7 +34,6 @@ class WeatherService:
         :return: True or False
         """
         logger.info('Check data')
-        daemon_service = DaemonService()
         begin_date, end_date = self._create_date_range(num_days)
         try:
             if data[len(data)-1]['applicable_date'] != begin_date.strftime("%Y-%m-%d"):
@@ -69,6 +68,9 @@ class WeatherService:
         if self._check_data(data, num_days) is False:
             data = self._weather_db.get_data(begin_date, end_date)
         return data
+
+
+weather_service = WeatherService()
 
 
 if __name__ == '__main__':
