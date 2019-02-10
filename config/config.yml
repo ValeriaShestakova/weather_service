@@ -1,0 +1,17 @@
+#Project settings
+project_name: WeatherService
+city: St Petersburg
+
+#DB settings
+db: Postgresql
+db_name: weather_db
+user: user
+password: user
+host: localhost
+port: 5432
+db_table: weather_data
+db_schema: public
+
+# External api settings
+api_name: MetaWeather
+api_address: https://www.metaweather.com/api/location/
