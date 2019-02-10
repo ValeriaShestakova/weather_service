@@ -20,7 +20,7 @@ class MetaWeatherAPI:
         self._city_id = self.get_city_id()
         self._date_format = "%Y/%m/%d"
 
-    def get_city_id(self):
+    def get_city_id(self) -> int:
         """
         Method to get location id
         :return: location id
@@ -34,7 +34,7 @@ class MetaWeatherAPI:
             raise ex
         return woeid
 
-    def get_data_for_days(self, num_days):
+    def get_data_for_days(self, num_days: int) -> list:
         """
         Method for get weather data from api for a certain number of days
         :param num_days: days number
@@ -49,7 +49,7 @@ class MetaWeatherAPI:
             data.extend(r.json())
         return data
 
-    def get_data_for_day(self):
+    def get_data_for_day(self) -> list:
         """
         Method for get weather data from api for one day
         :return: list data for day, each element in json format

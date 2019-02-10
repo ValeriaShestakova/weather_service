@@ -61,7 +61,7 @@ class WeatherDAO:
             print('Invalid connection data in config')
             raise er
 
-    def get_data(self, begin_date, end_date):
+    def get_data(self, begin_date: datetime.date, end_date: datetime.date) -> list:
         """
         Method for get weather data from DB
         :param begin_date: begin date in range
@@ -83,10 +83,10 @@ class WeatherDAO:
                     all_data.append(dictionary)
         return all_data
 
-    def save_data(self, weather_data):
+    def save_data(self, weather_data: list):
         """
         Method for save weather data to db
-        :param weather_data: lists of weather data in json
+        :param weather_data: list of weather data in json
         :return:
         """
         logger.info('Save data to db')
@@ -125,4 +125,3 @@ weather_dao = WeatherDAO()
 
 if __name__ == '__main__':
     WeatherDAO = WeatherDAO()
-    print(WeatherDAO.get_data(datetime.date(2019, 2, 1), datetime.datetime.today()))

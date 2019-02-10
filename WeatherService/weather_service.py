@@ -16,7 +16,8 @@ class WeatherService:
     def __init__(self):
         self._weather_db = weather_dao
 
-    def _create_date_range(self, num_days):
+    @staticmethod
+    def _create_date_range(num_days: int) -> tuple:
         """
         Method for creating date range on number of days
         :param num_days: number of days
@@ -26,7 +27,7 @@ class WeatherService:
         begin_date = end_date - datetime.timedelta(days=num_days - 1)
         return begin_date.date(), end_date
 
-    def _check_data(self, data, num_days):
+    def _check_data(self, data: list, num_days: int) -> bool:
         """
         Method for check data. Return true if data is full.
         :param data: lists of data
@@ -45,7 +46,7 @@ class WeatherService:
             daemon_service.proceed_weather(num_days)
             return False
 
-    def get_day_data_from_db(self):
+    def get_day_data_from_db(self) -> list:
         """
         Method to get data from local database for one day
         :return: list of weather data dicts
@@ -57,7 +58,7 @@ class WeatherService:
             data = self._weather_db.get_data(begin_date, end_date)
         return data
 
-    def get_days_data_from_db(self, num_days):
+    def get_days_data_from_db(self, num_days: int) -> list:
         """
         Method to get data from local database for some days
         :return: list of weather data dicts
