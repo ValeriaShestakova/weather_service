@@ -41,9 +41,11 @@ class MetaWeatherAPI:
         :return: list data for some days, each element in json format
         """
         end_date = datetime.datetime.today()
-        date_list = [end_date - datetime.timedelta(days=x) for x in range(0, num_days)]
+        date_list = \
+            [end_date - datetime.timedelta(days=x) for x in range(0, num_days)]
         base = self._address+str(self._city_id)+'/{}'
-        rs = (grequests.get(u) for u in [base.format(t.strftime(self._date_format)) for t in date_list])
+        rs = (grequests.get(u) for u in
+              [base.format(t.strftime(self._date_format)) for t in date_list])
         data = []
         for r in grequests.map(rs):
             data.extend(r.json())

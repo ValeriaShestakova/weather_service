@@ -7,9 +7,9 @@ import threading
 
 
 def create_app():
-    t = threading.Thread(target=daemon_service.load_new_data, daemon=True)
-    t.start()
-    t.join()
+    thread = threading.Thread(target=daemon_service.load_new_data, daemon=True)
+    thread.start()
+    thread.join()
     return Flask(__name__)
 
 

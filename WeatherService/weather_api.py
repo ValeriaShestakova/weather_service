@@ -28,9 +28,12 @@ class CityId(Resource):
 
 class HomePage(Resource):
     def get(self):
-        return 'Hi, you are on page weather service. If you want get info about ' \
-               'weather in SPb for one day: /weather_service/get_data_for_day, for days: ' \
-               '/weather_service/get_data_for_days/{num_days}. To get city id: /weather_service/get_city_id'
+        return 'Hi, you are on page weather service. ' \
+               'If you want get info about ' \
+               'weather in SPb for one day: ' \
+               '/weather_service/get_data_for_day, for days: ' \
+               '/weather_service/get_data_for_days/{num_days}. ' \
+               'To get city id: /weather_service/get_city_id'
 
 
 if __name__ == '__main__':

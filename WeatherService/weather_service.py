@@ -37,7 +37,8 @@ class WeatherService:
         logger.info('Check data')
         begin_date, end_date = self._create_date_range(num_days)
         try:
-            if data[len(data)-1]['applicable_date'] != begin_date.strftime("%Y-%m-%d"):
+            if data[len(data)-1]['applicable_date'] != \
+                    begin_date.strftime("%Y-%m-%d"):
                 daemon_service.proceed_weather(num_days)
                 return False
             else:
